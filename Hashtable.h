@@ -20,7 +20,12 @@ public:
     }
 };
 
-
+/*The Hashtable class inherits the Container class.
+  @param size_t tsize the size of the table
+  @param size_t numberElem represents how many elements are in the table
+  @param size_t maxFactor represent the factor by resizing when the table is full.
+  The methods are going to overwrite the ones from the super class
+*/
 template <typename E, size_t N=25>
 class Hashtable : public Container<E> {
     size_t tsize;
@@ -33,7 +38,10 @@ class Hashtable : public Container<E> {
     void quicksort(E*, int, int) const;
     E w() const;
     size_t y() const;
-    
+  /*The struct element is every element we will add/remove in the hashtable
+    @param E value is the key of the element 
+    @param Element* nextElement is a pointer that points to the next element in the chain
+  */  
  public:
     struct Element {
         E value;
@@ -44,18 +52,22 @@ class Hashtable : public Container<E> {
             this->nextElement = nullptr;
         }
     };
-
+// table is a pointer that point to another pointer. Here only defined.
     Element** table;
-    
+/* Constructor of the hashtable. N represets the given  table size (given in the template)
+   numberElem is 0, because at first there are no elements added.
+   In the constructor the table pointer is initialized with the given size.
+*/
     Hashtable() {
         tsize = N;
         numberElem = 0;
         maxFactor = 2;
-        table = new Element*[tsize];
-        for(size_t i=0; i<tsize; ++i) {
+        table = new Element*[tsize];      //E.g N=7 ==> tsize = 7 ==> table = new Element*[7] - An array that will contain up to 7 pointers.  
+        for(size_t i=0; i<tsize; ++i) {   // this loop is setting all the pointers in the table to poin nullptr [a.k.a null] at first, because it's empty.
             table[i] = nullptr;
         }
     }
+    // The destructor of our class. All elements are being removed.
     ~Hashtable() {
         for(size_t i = 0; i < tsize; i++) {
             while(table[i]!=nullptr) {
@@ -65,7 +77,7 @@ class Hashtable : public Container<E> {
             }
         
         }
-        delete[] table;
+        delete[] table; // this way we delete pointers :)) if you rememeber 
         
     }
     Hashtable(std::initializer_list<E> list) : Hashtable() {for(auto e: list) add_(e);}
